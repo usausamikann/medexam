@@ -121,16 +121,24 @@ class Case:
 
     def to_dict(self) -> dict:
         return {
-            "case_id": self.case_id,
+            "question_id": self.question_id,
             "exam": self.exam,
             "section": self.section,
-            "question_ids": self.question_ids,
-            "text": "\n".join(self.text_lines).strip(),
+            "number": self.number,
+            "question_type": self.question_type,
+            "case_id": self.case_id,
+            "stem": "\n".join(self.stem_lines).strip(),
+            "choices": [
+                {
+                    "label": choice.label,
+                    "text": choice.text,
+                }
+                for choice in self.choices
+            ],
             "source": {
                 "corpus": self.source,
             },
         }
-
 
 @dataclass
 class ReviewItem:
