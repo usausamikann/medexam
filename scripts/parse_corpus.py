@@ -69,12 +69,19 @@ class Question:
     def question_id(self) -> str:
         return f"{self.exam}-{self.section}-{self.number:03d}"
 
+    @property
+    def question_type(self) -> str:
+        if self.question_id in NUMERIC_QUESTION_IDS:
+            return "numeric"
+        return "multiple_choice"
+
     def to_dict(self) -> dict:
         return {
             "question_id": self.question_id,
             "exam": self.exam,
             "section": self.section,
             "number": self.number,
+            "question_type": self.question_type,
             "case_id": self.case_id,
             "stem": "\n".join(self.stem_lines).strip(),
             "choices": [
@@ -88,12 +95,6 @@ class Question:
                 "corpus": self.source,
             },
         }
-    
-    @property
-    def question_type(self) -> str:
-        if self.question_id in NUMERIC_QUESTION_IDS:
-            return "numeric"
-        return "multiple_choice"
 
 
 @dataclass
@@ -121,24 +122,16 @@ class Case:
 
     def to_dict(self) -> dict:
         return {
-            "question_id": self.question_id,
+            "case_id": self.case_id,
             "exam": self.exam,
             "section": self.section,
-            "number": self.number,
-            "question_type": self.question_type,
-            "case_id": self.case_id,
-            "stem": "\n".join(self.stem_lines).strip(),
-            "choices": [
-                {
-                    "label": choice.label,
-                    "text": choice.text,
-                }
-                for choice in self.choices
-            ],
+            "question_ids": self.question_ids,
+            "text": "\n".join(self.text_lines).strip(),
             "source": {
                 "corpus": self.source,
             },
         }
+
 
 @dataclass
 class ReviewItem:
