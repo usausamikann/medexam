@@ -12,6 +12,17 @@ ANSWER_DIR = Path("raw/corpus/answer")
 OUTPUT_PATH = Path("output/questions_with_answers.jsonl")
 REVIEW_PATH = Path("output/answer_review.tsv")
 
+EXCLUDED_QUESTION_IDS = {
+    "116-A-034",
+    "116-B-043",
+    "116-C-036",
+    "116-D-064",
+    "117-C-015",
+    "117-C-060",
+    "117-D-038",
+    "117-D-053",
+    "117-F-042",
+}
 
 @dataclass
 class AnswerRecord:
@@ -122,15 +133,18 @@ def main() -> None:
             answer_status = "missing"
 
         elif not answer_record.answers:
-            reviews.append(
-                (
-                    question_id,
-                    "正答欄が空",
+            if question_id in EXCLUDED_QUESTION_IDS:
+                accepted_answers = []
+                answer_status = "excluded"
+            else:
+                reviews.append(
+                    (
+                        question_id,
+                        "正答欄が空",
+                    )
                 )
-            )
-
-            accepted_answers = []
-            answer_status = "missing"
+                accepted_answers = []
+                answer_status = "missing"
 
         else:
             accepted_answers = answer_record.answers
