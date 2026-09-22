@@ -8,7 +8,7 @@ Inputs (default):
   fixed_data/question_labels.jsonl
 
 Output (default):
-  output/medexam.db
+  database/medexam.db
 
 Tables:
   common_cases
@@ -541,7 +541,7 @@ def parse_args() -> argparse.Namespace:
     project_root = script_path.parent.parent
 
     parser = argparse.ArgumentParser(
-        description="Build output/medexam.db from fixed_data JSONL files."
+        description="Build database/medexam.db from fixed_data JSONL files."
     )
     parser.add_argument(
         "--data-dir",
@@ -552,7 +552,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--db",
         type=Path,
-        default=project_root / "output" / "medexam.db",
+        default=project_root / "database" / "medexam.db",
         help="output SQLite database path",
     )
     return parser.parse_args()
