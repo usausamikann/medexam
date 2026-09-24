@@ -208,104 +208,7 @@ Y   公衆衛生
 
 
 ============================================================
-5. SQLite CLIで開く
-============================================================
-
-medexamリポジトリ直下から：
-
-  sqlite3 database/medexam_1.db
-
-DBと同じフォルダへ移動してから開く場合：
-
-  cd database
-  sqlite3 medexam_1.db
-
-
-============================================================
-6. 最初に使うと便利なSQLiteコマンド
-============================================================
-
-テーブル一覧：
-
-  .tables
-
-questionsテーブルの定義：
-
-  .schema questions
-
-列名を表示：
-
-  .headers on
-
-表形式で表示：
-
-  .mode column
-
-SQLiteを終了：
-
-  .quit
-
-
-============================================================
-7. SQL例
-============================================================
-
-問題数：
-
-  SELECT COUNT(*) FROM questions;
-
-先頭5問：
-
-  SELECT *
-  FROM questions
-  LIMIT 5;
-
-数値入力問題：
-
-  SELECT question_id, stem
-  FROM questions
-  WHERE question_type = 'numeric';
-
-120回の問題：
-
-  SELECT question_id, stem
-  FROM questions
-  WHERE exam = 120;
-
-primary labelが循環器（C）の問題：
-
-  SELECT q.question_id, q.stem
-  FROM questions AS q
-  JOIN question_labels AS l
-    ON q.question_id = l.question_id
-  WHERE l.label = 'C'
-    AND l.is_primary = 1;
-
-循環器ラベルを含む120回の問題：
-
-  SELECT q.question_id, q.stem
-  FROM questions AS q
-  JOIN question_labels AS l
-    ON q.question_id = l.question_id
-  WHERE q.exam = 120
-    AND l.label = 'C';
-
-ラベルごとの問題数：
-
-  SELECT label, COUNT(*) AS n
-  FROM question_labels
-  GROUP BY label
-  ORDER BY n DESC;
-
-採点除外問題：
-
-  SELECT question_id, stem
-  FROM questions
-  WHERE answer_status = 'excluded';
-
-
-============================================================
-8. テーブル間の関係
+5. テーブル間の関係
 ============================================================
 
 概略：
@@ -332,7 +235,7 @@ questions.case_id と common_cases.case_id をJOINする。
 
 
 ============================================================
-9. データ生成元
+6. データ生成元
 ============================================================
 
 medexam_1.db は以下の確定データから生成した。
@@ -349,7 +252,7 @@ medexam_1.db は以下の確定データから生成した。
 
 
 ============================================================
-10. 検証結果
+7. 検証結果
 ============================================================
 
 validate_out.py：
@@ -385,7 +288,7 @@ RESULT: OK
 
 
 ============================================================
-11. 注意事項
+8. 注意事項
 ============================================================
 
 - medexam_1.db はSQLiteのバイナリファイル。
